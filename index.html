@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Model Viewer AR - VR</title>
+  <meta name="description" content="Model Viewer (VR / AR) • A-Frame">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@3f0df33946cf12e3d552b3b4e500dd5b8ff6f692/dist/aframe-master.min.js"></script>
+
+  <!-- Ensure model-viewer.js and background-gradient.js are hosted or replaced with CDN equivalents if possible -->
+  <script src="model-viewer.js"></script> <!-- Include the correct URL or path -->
+  <script src="background-gradient.js"></script> <!-- Include the correct URL or path -->
+  <script>
+    function getQueryParam(param) {
+      const urlParams = new URLSearchParams(window.location.search);
+      return urlParams.get(param);
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const fileParam = getQueryParam("file");
+      const modelElement = document.getElementById("triceratops");
+
+      if (fileParam) {
+        const decodedFileParam = decodeURIComponent(fileParam);
+        const corsProxy = 'https://corsproxy.io/?';
+        modelElement.setAttribute("src", corsProxy + encodeURIComponent(decodedFileParam));
+      }
+    });
+  </script>
+</head>
+<body>
+
+<a-scene
+  renderer="colorManagement: true;"
+  info-message="htmlSrc: #messageText"
+  model-viewer="gltfModel: #triceratops"
+  xr-mode-ui="XRMode: vr">
+  <a-assets timeout="10000">
+    <a-asset-item id="triceratops"
+      src="https://cdn.aframe.io/examples/ar/models/triceratops/scene.gltf"
+      response-type="arraybuffer"></a-asset-item>
+
+    <img id="shadow" src="shadow.png"></img> <!-- Ensure 'shadow.png' is accessible -->
+    <a-asset-item id="messageText" src="message.html"></a-asset-item> <!-- Ensure 'message.html' is accessible -->
+  </a-assets>
+</a-scene>
+
+</body>
+</html>
